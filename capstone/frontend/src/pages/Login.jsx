@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { LogIn, Mail, Lock, Sprout, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Button from '../components/ui/Button';
@@ -12,6 +12,16 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('expired')) {
+      toast.error("Session Expired", {
+        description: "Please login again to continue."
+      });
+    }
+  }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

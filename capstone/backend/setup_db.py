@@ -19,11 +19,11 @@ def init_db():
         with conn.cursor() as cursor:
             print(f"Checking if database '{DB_NAME}' exists...")
             cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME}")
-            print(f"✅ Successfully ensured '{DB_NAME}' exists!")
+            print(f"Successfully ensured '{DB_NAME}' exists!")
         conn.close()
         return True
     except Exception as e:
-        print(f"❌ ERROR: Could not connect to MySQL.")
+        print(f"ERROR: Could not connect to MySQL.")
         print(f"Detail: {e}")
         print("\nFix solutions:")
         print(f"1. Check if MySQL is running (I see 'MySQL80' service is started).")

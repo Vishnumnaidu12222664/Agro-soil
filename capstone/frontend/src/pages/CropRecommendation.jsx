@@ -90,10 +90,10 @@ const CropRecommendation = () => {
             Input your soil's chemical profile and environmental conditions to find the high-yield crop match.
           </p>
         </div>
-        <div className="flex bg-gray-100 p-1.5 rounded-2xl border border-gray-200 shadow-inner">
-          <button className="px-6 py-2.5 rounded-xl text-sm font-bold bg-white text-emerald-600 shadow-sm transition-all duration-200 uppercase tracking-widest">
+        <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner">
+          <Button variant="outline" size="sm" className="bg-white border-0 shadow-sm text-emerald-600 uppercase tracking-widest text-xs px-6 py-2.5">
             Detailed Parameters
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -126,7 +126,8 @@ const CropRecommendation = () => {
                 <Button
                   type="submit"
                   loading={loading}
-                  className="w-full h-16 text-xl font-bold gap-3"
+                  size="lg"
+                  className="gap-3"
                 >
                   Generate Recommendation
                   <Search className="h-5 w-5" />

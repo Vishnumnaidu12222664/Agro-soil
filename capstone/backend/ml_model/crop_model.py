@@ -45,19 +45,19 @@ def recommend_crop_from_values(features):
         if all(col.lower() in features for col in new_crop_columns):
             x_input = np.array([[features[col.lower()] for col in new_crop_columns]])
             pred = new_crop_model.predict(x_input)[0]
-            print("🟢 Using NEW crop model →", pred)
+            print("Using NEW crop model ->", pred)
             return pred
     except Exception as e:
-        print("❌ Error using NEW crop model:", e)
+        print("Error using NEW crop model:", e)
 
     # --- 2) Fallback to OLD model ---
     if all(k in features for k in ['n', 'p', 'k', 'ph']):
         x_input = np.array([[features['n'], features['p'], features['k'], features['ph']]])
         pred = crop_model.predict(x_input)[0]
-        print("🟡 Using OLD crop model →", pred)
+        print("Using OLD crop model ->", pred)
         return pred
 
     # --- 3) Invalid input ---
-    print("❌ Invalid input features:", features)
+    print("Invalid input features:", features)
     return "Invalid input features. Please check your field names and values."
 

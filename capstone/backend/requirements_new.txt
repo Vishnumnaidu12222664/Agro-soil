@@ -5,3 +5,5 @@ joblib
 scikit-learn
 Pillow
 numpy
+opencv-python
+tensorflow

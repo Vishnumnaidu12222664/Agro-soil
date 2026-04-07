@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="flex min-h-screen bg-[#FAF5E9] font-sans selection:bg-[#FFCC00]/30 selection:text-[#1a1a1a]">
       {/* Toast Notifications */}
       <Toaster position="top-right" richColors />
 
@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
       <Sidebar />
 
       {/* Main Content (Responsive width) */}
-      <div className="flex-1 flex flex-col ml-72">
+      <div className="flex-1 flex flex-col ml-80 bg-[#FAF5E9]">
         {/* Navigation Bar */}
         <Navbar />
 
@@ -32,12 +32,12 @@ const Layout = ({ children }) => {
         </main>
 
         {/* Footer */}
-        <footer className="px-10 py-6 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-white">
+        <footer className="px-10 py-6 border-t border-gray-200 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-[#FAF5E9]">
           <p>© 2026 AgroAI Platform - Precision Agriculture Redefined</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-emerald-600 transition-colors duration-200">Privacy Policy</a>
-            <a href="#" className="hover:text-emerald-600 transition-colors duration-200">Terms of Service</a>
-            <a href="#" className="hover:text-emerald-600 transition-colors duration-200">Help Documentation</a>
+            <a href="#" className="hover:text-primary-600 transition-colors duration-200 uppercase tracking-[0.2em]">Privacy Policy</a>
+            <a href="#" className="hover:text-primary-600 transition-colors duration-200 uppercase tracking-[0.2em]">Terms of Service</a>
+            <a href="#" className="hover:text-primary-600 transition-colors duration-200 uppercase tracking-[0.2em]">Help Documentation</a>
           </div>
         </footer>
       </div>

@@ -1,158 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "system-ui", "-apple-system", "sans-serif";
+  --font-display: "Plus Jakarta Sans", "sans-serif";
+  
+  /* User-Specified & Refined Palette */
+  --color-primary-600: #009B4D; /* Pure Agrarian Green */
+  --color-primary-700: #007d3e;
+  --color-primary-900: #003d1e; /* Deep Professional Green for Sidebars */
+  --color-accent: #FFCC00; /* Tangerine Yellow */
+  --color-ivory: #FAF5E9; /* Premium Ivory Background */
+  --color-slate-950: #0a0f0d;
+  
+  --shadow-premium: 0 20px 50px -12px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 30px rgba(0, 155, 77, 0.2);
+  --shadow-accent-glow: 0 0 25px rgba(255, 204, 0, 0.3);
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: var(--font-sans);
+  line-height: 1.6;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  color: #1a1a1a;
+  background-color: var(--color-ivory);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  background-color: var(--color-ivory);
+  overflow-x: hidden;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  font-weight: 800;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Glassmorphism primitives */
+.glass-effect {
+  background: rgba(250, 245, 233, 0.85); /* Ivory base */
+  backdrop-filter: blur(20px);
+  border-bottom: 2px solid rgba(0, 155, 77, 0.1);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.glass-dark {
+  background: rgba(0, 61, 30, 0.98); /* Deep Green for Professional Look */
+  backdrop-filter: blur(24px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Custom scrollbar */
-.custom-scroll::-webkit-scrollbar {
-  width: 8px;
+/* Premium Card Styles */
+.card-premium {
+  @apply rounded-[2.5rem] border border-gray-200/60 shadow-premium hover:shadow-2xl transition-all duration-700;
+  background-color: white;
 }
 
-.custom-scroll::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+/* Utility to ensure background colors override the default */
+.bg-primary-pure { background-color: #009B4D !important; color: white !important; }
+.bg-accent-yellow { background-color: #FFCC00 !important; color: #1a1a1a !important; }
+
+/* Accessible Nav Items */
+.nav-item-active {
+  background: rgba(255, 204, 0, 0.1);
+  color: #FFCC00 !important;
+  border: 1px solid rgba(255, 204, 0, 0.2);
 }
 
-.custom-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
 }
 
-.custom-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.6);
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.4s ease-out;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-@keyframes scaleIn {
-  0% { transform: scale(0.7); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-.animate-scaleIn {
-  animation: scaleIn 0.35s ease-out;
+::-webkit-scrollbar-thumb {
+  background: #d1dbd4;
+  border-radius: 100px;
 }
 
-@keyframes bounceSlow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
-}
-.animate-bounceSlow {
-  animation: bounceSlow 2.5s infinite;
+/* Animations */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-
-@keyframes pulseSlow {
-  0% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.4;
-  }
+.reveal-up {
+  animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-pulseSlow {
-  animation: pulseSlow 2.5s infinite ease-in-out;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(25px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.animate-slideUp {
-  animation: slideUp 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.animate-fadeIn {
-  animation: fadeIn 0.35s ease-out;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.animate-scaleIn {
-  animation: scaleIn 0.25s ease-out;
+.bg-mesh {
+  background-color: #FAF5E9;
+  background-image: 
+    radial-gradient(at 0% 0%, #ffffff 0px, transparent 50%),
+    radial-gradient(at 100% 100%, #f1efe7 0px, transparent 50%);
 }

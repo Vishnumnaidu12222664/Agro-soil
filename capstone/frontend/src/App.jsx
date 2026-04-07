@@ -7,6 +7,13 @@ import MarketPrices from "./pages/MarketPrices";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+import Marketplace from "./pages/Marketplace";
+import AddProduct from "./pages/AddProduct";
+import MyProducts from "./pages/MyProducts";
+import CropDiseaseDetection from "./pages/CropDiseaseDetection";
+import Brands from "./pages/Brands";
+import FarmerProfile from "./pages/FarmerProfile";
+
 // Simple Protected Route
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -24,43 +31,25 @@ function App() {
       <Route path="/register" element={<Register />} />
 
       {/* Protected Dashboard Routes */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/soil"
-        element={
-          <ProtectedRoute>
-            <SoilAnalysis />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/recommend"
-        element={
-          <ProtectedRoute>
-            <CropRecommendation />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/prices"
-        element={
-          <ProtectedRoute>
-            <MarketPrices />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/soil" element={<ProtectedRoute><SoilAnalysis /></ProtectedRoute>} />
+      <Route path="/recommend" element={<ProtectedRoute><CropRecommendation /></ProtectedRoute>} />
+      <Route path="/prices" element={<ProtectedRoute><MarketPrices /></ProtectedRoute>} />
+      <Route path="/crop-disease" element={<ProtectedRoute><CropDiseaseDetection /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><FarmerProfile /></ProtectedRoute>} />
+      
+      {/* Marketplace & Partners */}
+      <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
+      <Route path="/marketplace/add" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+      <Route path="/marketplace/my" element={<ProtectedRoute><MyProducts /></ProtectedRoute>} />
+      <Route path="/brands/:category" element={<ProtectedRoute><Brands /></ProtectedRoute>} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
+
+
 
 export default App;

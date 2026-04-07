@@ -10,6 +10,11 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
+    is_verified = db.Column(db.Boolean, default=False)
+    profile_image = db.Column(db.String(500))
+    land_image = db.Column(db.String(500))
+    location = db.Column(db.String(200))
+    land_acres = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def set_password(self, password):
@@ -23,5 +28,47 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "email": self.email,
+            "is_verified": self.is_verified,
+            "profile_image": self.profile_image,
+            "land_image": self.land_image,
+            "location": self.location,
+            "land_acres": self.land_acres,
             "created_at": self.created_at.isoformat()
         }
+
+class Product(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    farmer_name = db.Column(db.String(100)) # Duplicate allowed per request
+    product_name = db.Column(db.String(100), nullable=False)
+    price_per_kg = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Float, nullable=False)
+    location = db.Column(db.String(200), nullable=False)
+    delivery_radius = db.Column(db.Integer)
+    image_url = db.Column(db.String(500))
+    orders_count = db.Column(db.Integer, default=0)
+    earnings = db.Column(db.Float, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationship to user
+    owner = db.relationship('User', backref=db.backref('products_owned', lazy=True))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "farmer_name": self.farmer_name or (self.owner.name if self.owner else "Unknown"),
+            "product_name": self.product_name,
+            "price_per_kg": self.price_per_kg,
+            "quantity": self.quantity,
+            "location": self.location,
+            "delivery_radius": self.delivery_radius,
+            "image_url": self.image_url,
+            "orders_count": self.orders_count,
+            "earnings": self.earnings,
+            "created_at": self.created_at.isoformat(),
+            "is_verified": self.owner.is_verified if self.owner else False
+        }
+
+

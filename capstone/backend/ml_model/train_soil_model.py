@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import joblib
 
-# ✅ Path to your dataset folder (where the 5 soil folders are)
+# Path to your dataset folder (where the 5 soil folders are)
 dataset_path = r"C:\Users\vishn\Downloads\archive\Soil types"
   # <-- change this!
 
@@ -46,4 +46,4 @@ print("Accuracy:", accuracy_score(y_test, y_pred))
 os.makedirs("ml_model", exist_ok=True)
 joblib.dump({"model": clf, "classes": classes}, "ml_model/soil_classifier.joblib")
 
-print("✅ Model saved successfully at: ml_model/soil_classifier.joblib")
+print("Model saved successfully at: ml_model/soil_classifier.joblib")

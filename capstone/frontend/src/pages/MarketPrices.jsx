@@ -1,48 +1,77 @@
 import { useState, useEffect } from "react";
 import { 
   TrendingUp, 
-  MapPin, 
   Calendar, 
-  Search, 
-  ChevronDown, 
   BarChart3, 
-  ArrowUpRight, 
-  ArrowDownRight,
   Info,
-  Loader2
+  Loader2,
+  MapPin
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Cell 
+} from 'recharts';
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
 import { toast } from "sonner";
-import { getStatesForCrop, getCropPrice } from "../api/cropModelApi";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from "recharts";
+import { getCropPrice, getStatesForCrop, getCrops } from "../api/cropModelApi";
 
 const MarketPrices = () => {
   const [crop, setCrop] = useState("");
+  const [crops, setCrops] = useState([]);
   const [state, setState] = useState("");
   const [states, setStates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchingStates, setFetchingStates] = useState(false);
   const [prices, setPrices] = useState([]);
 
-  const handleCropSearch = async (e) => {
+  useEffect(() => {
+    const fetchCrops = async () => {
+      try {
+        const cropList = await getCrops();
+        setCrops(cropList);
+        if (cropList.length > 0) {
+          setCrop(cropList[0]);
+          fetchStatesForCrop(cropList[0]);
+        }
+      } catch (err) {
+        console.error("Error fetching crops:", err);
+        toast.error("Failed to load crops list");
+      }
+    };
+    fetchCrops();
+  }, []);
+
+  const fetchStatesForCrop = async (selectedCrop) => {
+    if (!selectedCrop) return;
+    setFetchingStates(true);
+    try {
+      const foundStates = await getStatesForCrop(selectedCrop);
+      setStates(foundStates);
+      if (foundStates.length > 0) {
+        setState(foundStates[0]);
+      } else {
+        setState("");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch available states");
+    } finally {
+      setFetchingStates(false);
+    }
+  };
+
+  const handleCropChange = (e) => {
     const value = e.target.value;
     setCrop(value);
-    
-    if (value.length > 2) {
-      setFetchingStates(true);
-      try {
-        const foundStates = await getStatesForCrop(value);
-        setStates(foundStates);
-        if (foundStates.length > 0) setState(foundStates[0]);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setFetchingStates(false);
-      }
-    }
+    fetchStatesForCrop(value);
   };
 
   const handleFetchPrices = async () => {
@@ -89,14 +118,14 @@ const MarketPrices = () => {
               <div className="group">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">Crop Name</label>
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-emerald-600 transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="Enter crop..."
-                    className="w-full pl-10 h-12 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold text-gray-800 placeholder:text-gray-300 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
+                  <select
+                    className="w-full h-12 bg-gray-50 border-2 border-gray-100 rounded-xl font-bold text-gray-800 px-4 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
                     value={crop}
-                    onChange={handleCropSearch}
-                  />
+                    onChange={handleCropChange}
+                  >
+                    <option value="">Select crop...</option>
+                    {crops.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                   {fetchingStates && (
                     <Loader2 className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 animate-spin" />
                   )}
@@ -123,7 +152,7 @@ const MarketPrices = () => {
                 onClick={handleFetchPrices}
                 loading={loading}
                 disabled={!crop || !state}
-                className="w-full h-12 font-bold tracking-widest"
+                size="lg"
               >
                 Fetch Analytics
               </Button>
@@ -179,8 +208,8 @@ const MarketPrices = () => {
                     <h3 className="text-sm font-bold text-gray-800 uppercase tracking-widest border-b-2 border-emerald-500 pb-1 w-fit">Price Distribution (₹)</h3>
                     <div className="flex gap-4">
                        <div className="flex items-center gap-2">
-                         <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                         <span className="text-[10px] font-bold uppercase text-gray-400">Market Price</span>
+                          <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                          <span className="text-[10px] font-bold uppercase text-gray-400">Market Price</span>
                        </div>
                     </div>
                   </div>
@@ -213,8 +242,10 @@ const MarketPrices = () => {
                       <Card className="hover:border-emerald-500 group transition-all duration-200 border-gray-100">
                         <div className="flex justify-between items-start mb-4">
                           <div className="space-y-1">
-                            <h4 className="text-base font-bold text-gray-800 leading-none">{p.market}</h4>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{p.district}, {p.state}</p>
+                            <h4 className="text-base font-bold text-gray-800 leading-none group-hover:text-emerald-600 transition-colors uppercase tracking-tight">{p.market}</h4>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1">
+                               <MapPin size={10} /> {p.district}, {p.state}
+                            </p>
                           </div>
                           <div className="bg-gray-50 p-2 rounded-lg border border-gray-100 group-hover:bg-emerald-50 transition-colors duration-200">
                             <Calendar className="h-4 w-4 text-gray-400 group-hover:text-emerald-500" />

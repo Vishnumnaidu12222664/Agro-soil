@@ -1,3 +1,4 @@
+# Backend v2.4.3 - Model Logic Optimized for 11MB Model
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager

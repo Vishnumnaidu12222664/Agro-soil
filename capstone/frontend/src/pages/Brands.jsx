@@ -22,9 +22,9 @@ const Brands = () => {
             title: "Premium Protective Solutions",
             subtitle: "Global Leaders in Crop Protection & Bio-Defenders",
             items: [
-                { name: "Bayer CropScience", desc: "Advanced fungal and insect control for high-yield grains.", rating: 4.9, image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=2670&auto=format&fit=crop" },
-                { name: "Syngenta", desc: "Holistic pest management with sustainable bio-catalysts.", rating: 4.8, image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=2670&auto=format&fit=crop" },
-                { name: "UPL Limited", desc: "Strategic crop protection for diverse tropical soil types.", rating: 4.7, image: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?q=80&w=2670&auto=format&fit=crop" }
+                { name: "Bayer CropScience", desc: "Advanced fungal and insect control for high-yield grains.", rating: 4.9, image: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?q=80&w=2670&auto=format&fit=crop" },
+                { name: "Syngenta", desc: "Holistic pest management with sustainable bio-catalysts.", rating: 4.8, image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=2670&auto=format&fit=crop" },
+                { name: "UPL Limited", desc: "Strategic crop protection for diverse tropical soil types.", rating: 4.7, image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=2670&auto=format&fit=crop" }
             ]
         },
         fertilizers: {
@@ -40,9 +40,9 @@ const Brands = () => {
             title: "Precision Machinery",
             subtitle: "Autonomous Operations & Heavy Agrarian Logistics",
             items: [
-                { name: "John Deere", desc: "The Gold Standard in autonomous tractors and digital harvester units.", rating: 5.0, image: "https://m.media-amazon.com/images/I/91r6I65UfCL._AC_UF1000,1000_QL80_.jpg" },
-                { name: "Mahindra & Mahindra", desc: "Global OJA series engineered for the ultimate Indian subcontinent terrains.", rating: 4.8, image: "https://www.mahindratractor.com/images/gallery/mahindra-3130_gallery_01.jpg" },
-                { name: "Kubota", desc: "Elite compact precision machinery for intensive orchard and horticulture.", rating: 4.6, image: "https://lirp.cdn-website.com/39352e00/dms3rep/multi/opt/kubota-tractor-model-l2501-hst-4wd-1920w.jpg" }
+                { name: "John Deere", desc: "The Gold Standard in autonomous tractors and digital harvester units.", rating: 5.0, image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2832&auto=format&fit=crop" },
+                { name: "Mahindra & Mahindra", desc: "Global OJA series engineered for the ultimate Indian subcontinent terrains.", rating: 4.8, image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2670&auto=format&fit=crop" },
+                { name: "Kubota", desc: "Elite compact precision machinery for intensive orchard and horticulture.", rating: 4.6, image: "https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=2670&auto=format&fit=crop" }
             ]
         }
     };

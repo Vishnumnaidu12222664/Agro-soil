@@ -61,6 +61,34 @@ import numpy as np
 from PIL import Image
 
 #############################
+# MOCK DATA FOR DEMO FALLBACK
+#############################
+MOCK_DATA = {
+    "Paddy(Dhan)(Common)": [
+        {"state": "Punjab", "district": "Amritsar", "market": "Amritsar Grain", "commodity": "Rice", "variety": "Pusa 1121", "min_price": "2850", "max_price": "3100", "modal_price": "3000"},
+        {"state": "Punjab", "district": "Ludhiana", "market": "Ludhiana Market", "commodity": "Rice", "variety": "Basmati", "min_price": "3200", "max_price": "3500", "modal_price": "3400"},
+        {"state": "Telangana", "district": "Nizamabad", "market": "Nizamabad Mandi", "commodity": "Rice", "variety": "BPT", "min_price": "2400", "max_price": "2700", "modal_price": "2550"},
+        {"state": "Telangana", "district": "Warangal", "market": "Warangal Market", "commodity": "Rice", "variety": "Sona Masuri", "min_price": "2600", "max_price": "2900", "modal_price": "2750"}
+    ],
+    "Wheat": [
+        {"state": "Haryana", "district": "Karnal", "market": "Karnal Mandi", "commodity": "Wheat", "variety": "Dara", "min_price": "2125", "max_price": "2250", "modal_price": "2200"},
+        {"state": "Rajasthan", "district": "Kota", "market": "Kota Grain", "commodity": "Wheat", "variety": "Lokwan", "min_price": "2300", "max_price": "2500", "modal_price": "2400"}
+    ],
+    "Cotton": [
+        {"state": "Andhra Pradesh", "district": "Guntur", "market": "Guntur Market", "commodity": "Cotton", "variety": "LRA", "min_price": "6500", "max_price": "7200", "modal_price": "6800"},
+        {"state": "Gujarat", "district": "Rajkot", "market": "Rajkot Mandi", "commodity": "Cotton", "variety": "Shankar-6", "min_price": "6800", "max_price": "7500", "modal_price": "7100"}
+    ],
+    "Maize": [
+        {"state": "Rajasthan", "district": "Jaipur", "market": "Jaipur Mandi", "commodity": "Maize", "variety": "Yellow", "min_price": "1900", "max_price": "2100", "modal_price": "2000"},
+        {"state": "Karnataka", "district": "Davangere", "market": "Davangere Market", "commodity": "Maize", "variety": "Hybrid", "min_price": "1800", "max_price": "2050", "modal_price": "1950"}
+    ],
+    "Sugarcane": [
+        {"state": "Uttar Pradesh", "district": "Meerut", "market": "Meerut Mandi", "commodity": "Sugarcane", "variety": "Common", "min_price": "340", "max_price": "360", "modal_price": "350"},
+        {"state": "Maharashtra", "district": "Pune", "market": "Pune Market", "commodity": "Sugarcane", "variety": "Common", "min_price": "3100", "max_price": "3300", "modal_price": "3200"}
+    ]
+}
+
+#############################
 # SOIL IMAGE PREDICTION
 #############################
 @app.route("/predict-crop-from-soil", methods=["POST"])
@@ -195,13 +223,13 @@ def get_states_for_crop():
 
         # FALLBACK FOR DEMO IF API KEY IS INVALID
         if not data.get("records") or "error" in data:
-            if normalized_crop == "Cotton":
-                return jsonify({"crop": "Cotton", "states": ["Andhra Pradesh", "Madhya Pradesh", "Gujarat"]})
-            if "Paddy" in normalized_crop or normalized_crop == "Rice":
-                return jsonify({"crop": "Rice", "states": ["Punjab", "Kerala", "Tamil Nadu", "Telangana"]})
+            if normalized_crop in MOCK_DATA:
+                states = sorted(list(set(r["state"] for r in MOCK_DATA[normalized_crop])))
+                print(f"🔄 Using mock states for {normalized_crop}: {states}")
+                return jsonify({"crop": normalized_crop, "states": states})
             
-            print(f"⚠ API Error or Empty: {data.get('error', 'No records')}")
-            return jsonify({"crop": normalized_crop, "states": FALLBACK_STATES})
+            print(f"⚠ API Error or Empty and no mock data for: {normalized_crop}")
+            return jsonify({"crop": normalized_crop, "states": []})
 
         states = sorted(set(r["state"] for r in data["records"]))
         return jsonify({"crop": normalized_crop, "states": states})
@@ -241,16 +269,10 @@ def get_crop_price():
 
         if not data.get("records"):
             # MOCK DATA FALLBACK FOR DEMO
-            if normalized_crop == "Paddy(Dhan)(Common)":
-                return jsonify({"prices": [
-                    {"state": state or "Punjab", "district": "Amritsar", "market": "Amritsar Grain", "commodity": "Rice", "variety": "Pusa 1121", "min_price": "2850", "max_price": "3100", "modal_price": "3000"},
-                    {"state": state or "Punjab", "district": "Ludhiana", "market": "Ludhiana Market", "commodity": "Rice", "variety": "Basmati", "min_price": "3200", "max_price": "3500", "modal_price": "3400"}
-                ]})
-            if normalized_crop == "Wheat":
-                return jsonify({"prices": [
-                    {"state": state or "Haryana", "district": "Karnal", "market": "Karnal Mandi", "commodity": "Wheat", "variety": "Dara", "min_price": "2125", "max_price": "2250", "modal_price": "2200"},
-                    {"state": state or "Rajasthan", "district": "Kota", "market": "Kota Grain", "commodity": "Wheat", "variety": "Lokwan", "min_price": "2300", "max_price": "2500", "modal_price": "2400"}
-                ]})
+            if normalized_crop in MOCK_DATA:
+                filtered = [r for r in MOCK_DATA[normalized_crop] if not state or r["state"] == state]
+                print(f"🔄 Using mock prices for {normalized_crop} (State: {state}) - Found {len(filtered)} records")
+                return jsonify({"prices": filtered})
             return jsonify({"prices": []})
 
         formatted = [

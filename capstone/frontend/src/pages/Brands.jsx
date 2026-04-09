@@ -1,18 +1,27 @@
 import { motion } from "framer-motion";
 import { useParams, Link } from "react-router-dom";
-import { 
-  ShieldCheck, 
-  FlaskConical, 
-  Tractor, 
-  ExternalLink, 
-  Star, 
-  Award,
-  Zap,
-  TrendingUp,
-  Tag
+import {
+    ShieldCheck,
+    FlaskConical,
+    Tractor,
+    ExternalLink,
+    Star,
+    Award,
+    Zap,
+    TrendingUp,
+    Tag
 } from "lucide-react";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
+import jhondeerImg from "../assets/jhondeer.jpeg";
+import mahindraImg from "../assets/mahindra.jpeg";
+import kubotaImg from "../assets/kubota.jpeg";
+import yaraImg from "../assets/Yara.jpeg";
+import iffcoImg from "../assets/iffco.jpeg";
+import nutrienImg from "../assets/Nuterin.jpg";
+import bayerImg from "../assets/Bayer-CropScience.avif";
+import syngentaImg from "../assets/Syngenta.jpg";
+import uplImg from "../assets/UPL Limited.jpg";
 
 const Brands = () => {
     const { category } = useParams();
@@ -22,27 +31,27 @@ const Brands = () => {
             title: "Premium Protective Solutions",
             subtitle: "Global Leaders in Crop Protection & Bio-Defenders",
             items: [
-                { name: "Bayer CropScience", desc: "Advanced fungal and insect control for high-yield grains.", rating: 4.9, image: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?q=80&w=2670&auto=format&fit=crop" },
-                { name: "Syngenta", desc: "Holistic pest management with sustainable bio-catalysts.", rating: 4.8, image: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=2670&auto=format&fit=crop" },
-                { name: "UPL Limited", desc: "Strategic crop protection for diverse tropical soil types.", rating: 4.7, image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=2670&auto=format&fit=crop" }
+                { name: "Bayer CropScience", desc: "Advanced fungal and insect control for high-yield grains.", rating: 4.9, image: bayerImg },
+                { name: "Syngenta", desc: "Holistic pest management with sustainable bio-catalysts.", rating: 4.8, image: syngentaImg },
+                { name: "UPL Limited", desc: "Strategic crop protection for diverse tropical soil types.", rating: 4.7, image: uplImg }
             ]
         },
         fertilizers: {
             title: "Nutritional Excellence",
             subtitle: "Elite Soil Enrichment & Micronutrient Precision",
             items: [
-                { name: "Yara International", desc: "Digital farming solutions for nitrogen optimization.", rating: 5.0, image: "https://images.unsplash.com/photo-1624814233195-0231ea74d4b2?q=80&w=2670&auto=format&fit=crop" },
-                { name: "IFFCO", desc: "India's premier cooperative nitrogen-rich urea and DAP.", rating: 4.9, image: "https://images.unsplash.com/photo-1595113316349-9fa4ee24f884?q=80&w=2670&auto=format&fit=crop" },
-                { name: "Nutrien", desc: "Comprehensive potash and phosphate nutritional suites.", rating: 4.7, image: "https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2670&auto=format&fit=crop" }
+                { name: "Yara International", desc: "Digital farming solutions for nitrogen optimization.", rating: 5.0, image: yaraImg },
+                { name: "IFFCO", desc: "India's premier cooperative nitrogen-rich urea and DAP.", rating: 4.9, image: iffcoImg },
+                { name: "Nutrien", desc: "Comprehensive potash and phosphate nutritional suites.", rating: 4.7, image: nutrienImg }
             ]
         },
         equipment: {
             title: "Precision Machinery",
             subtitle: "Autonomous Operations & Heavy Agrarian Logistics",
             items: [
-                { name: "John Deere", desc: "The Gold Standard in autonomous tractors and digital harvester units.", rating: 5.0, image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2832&auto=format&fit=crop" },
-                { name: "Mahindra & Mahindra", desc: "Global OJA series engineered for the ultimate Indian subcontinent terrains.", rating: 4.8, image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2670&auto=format&fit=crop" },
-                { name: "Kubota", desc: "Elite compact precision machinery for intensive orchard and horticulture.", rating: 4.6, image: "https://images.unsplash.com/photo-1594495894542-a46cc73e081a?q=80&w=2670&auto=format&fit=crop" }
+                { name: "John Deere", desc: "The Gold Standard in autonomous tractors and digital harvester units.", rating: 5.0, image: jhondeerImg },
+                { name: "Mahindra & Mahindra", desc: "Global OJA series engineered for the ultimate Indian subcontinent terrains.", rating: 4.8, image: mahindraImg },
+                { name: "Kubota", desc: "Elite compact precision machinery for intensive orchard and horticulture.", rating: 4.6, image: kubotaImg }
             ]
         }
     };
@@ -55,7 +64,7 @@ const Brands = () => {
             <section className="relative h-[40vh] min-h-[350px] overflow-hidden rounded-[3rem] shadow-premium group">
                 <div className="absolute inset-0 bg-[#003D1E]" />
                 <div className="absolute inset-0 bg-mesh opacity-20" />
-                
+
                 <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 space-y-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -63,7 +72,7 @@ const Brands = () => {
                         className="space-y-4"
                     >
                         <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 text-accent text-[10px] font-black uppercase tracking-[0.3em]">
-                           Official Strategic Partnerships
+                            Official Strategic Partnerships
                         </span>
                         <h1 className="text-6xl font-extrabold text-white tracking-tighter uppercase italic">{current.title}</h1>
                         <p className="text-white/60 font-medium max-w-xl mx-auto uppercase tracking-widest text-xs">{current.subtitle}</p>
@@ -93,7 +102,7 @@ const Brands = () => {
                                         <Award size={12} /> Certified Partner
                                     </div>
                                     <div className="flex gap-1">
-                                        {[1,2,3,4,5].map(star => <Star key={star} size={10} className={star <= Math.floor(item.rating) ? "fill-accent text-accent" : "text-slate-200"} />)}
+                                        {[1, 2, 3, 4, 5].map(star => <Star key={star} size={10} className={star <= Math.floor(item.rating) ? "fill-accent text-accent" : "text-slate-200"} />)}
                                     </div>
                                 </div>
 

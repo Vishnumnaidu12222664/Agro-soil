@@ -12,7 +12,7 @@ class CI(tf.keras.layers.InputLayer):
         kwargs.pop('optional', None)
         super().__init__(*args, **kwargs)
 
-model_path = r"c:\Users\vishn\Desktop\capstone\capstone\backend\ml_model\crop_disease\model.h5"
+model_path = os.path.join(os.path.dirname(__file__), "..", "crop_disease", "model.h5")
 model = tf.keras.models.load_model(model_path, custom_objects={'Sequential': CS, 'InputLayer': CI}, compile=False)
 print("CLASS_COUNT_START")
 last_layer = model.layers[-1]

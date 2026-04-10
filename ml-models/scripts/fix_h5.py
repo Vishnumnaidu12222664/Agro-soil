@@ -1,7 +1,8 @@
 import h5py
 import json
+import os
 
-model_path = r"c:\Users\vishn\Desktop\capstone\capstone\backend\ml_model\crop_disease\model.h5"
+model_path = os.path.join(os.path.dirname(__file__), "..", "crop_disease", "model.h5")
 with h5py.File(model_path, 'r') as f:
     model_config = f.attrs.get('model_config')
     if model_config:

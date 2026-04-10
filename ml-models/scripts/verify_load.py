@@ -1,9 +1,10 @@
 import sys
 import os
 # Ensure we are in the backend directory
-sys.path.append(os.getcwd())
+# Ensure we are in the ml-models directory environment
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from ml_model.crop_disease.model import model
+from crop_disease.model import model
 
 if model is not None:
     print("FINAL_SUCCESS: Model loaded")

@@ -7,9 +7,12 @@ from difflib import get_close_matches
 import os
 import tempfile
 
-from ml_model.soil_model import predict_soil
-from ml_model.crop_model import recommend_crop_from_soil, recommend_crop_from_values
-from ml_model.crop_disease.model import predict_disease
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'ml-models'))
+
+from soil_model import predict_soil
+from crop_model import recommend_crop_from_soil, recommend_crop_from_values
+from crop_disease.model import predict_disease
 from config import Config
 from auth.models import db
 from auth.routes import auth_blueprint

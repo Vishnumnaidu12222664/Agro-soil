@@ -1,9 +1,9 @@
-Flask==3.1.2
-flask-cors==6.0.1
-requests
 joblib
 scikit-learn
 Pillow
 numpy
 opencv-python
 tensorflow
+googlesearch-python
+beautifulsoup4
+h5py

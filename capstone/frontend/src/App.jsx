@@ -14,6 +14,8 @@ import CropDiseaseDetection from "./pages/CropDiseaseDetection";
 import Brands from "./pages/Brands";
 import FarmerProfile from "./pages/FarmerProfile";
 
+import Welcome from "./pages/Welcome";
+
 // Simple Protected Route
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -24,14 +26,17 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  const token = localStorage.getItem("token");
+
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="/" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
       {/* Protected Dashboard Routes */}
-      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/soil" element={<ProtectedRoute><SoilAnalysis /></ProtectedRoute>} />
       <Route path="/recommend" element={<ProtectedRoute><CropRecommendation /></ProtectedRoute>} />
       <Route path="/prices" element={<ProtectedRoute><MarketPrices /></ProtectedRoute>} />

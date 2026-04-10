@@ -13,7 +13,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   const navLinks = [
-    { name: "Operations", path: "/" },
+    { name: "Operations", path: "/dashboard" },
     { name: "Marketplace", path: "/marketplace" },
     { name: "Pesticides", path: "/brands/pesticides" },
     { name: "Fertilizers", path: "/brands/fertilizers" },

@@ -19,7 +19,7 @@ const Sidebar = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const menuItems = [
-    { title: "Terminal", subtitle: "Mission Control", icon: LayoutDashboard, path: "/" },
+    { title: "Terminal", subtitle: "Mission Control", icon: LayoutDashboard, path: "/dashboard" },
     { title: "Soil Analysis", subtitle: "Neural Diagnostics", icon: Droplets, path: "/soil" },
     { title: "Crop Oracle", subtitle: "Strategic Planning", icon: Sprout, path: "/recommend" },
     { title: "Markets", subtitle: "Economic Indices", icon: BarChart3, path: "/prices" },

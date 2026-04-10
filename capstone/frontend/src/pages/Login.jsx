@@ -40,7 +40,7 @@ const Login = () => {
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('user', JSON.stringify(data.user));
         toast.success("Welcome back, Farmer!");
-        setTimeout(() => navigate('/'), 1000);
+        setTimeout(() => navigate('/dashboard'), 1000);
       } else {
         toast.error(data.msg || "Invalid credentials");
       }
@@ -55,9 +55,12 @@ const Login = () => {
     <div className="fixed inset-0 flex items-center justify-center p-6 bg-slate-50 overflow-hidden font-sans">
       <Toaster position="top-right" richColors />
       
-      {/* Abstract Background Shapes */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-3xl" />
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-3xl animate-pulse" />
+      {/* 🇮🇳 India Map Background Overlay */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+        <img src="/assets/india-map-bg.png" alt="India Map" className="w-full h-full object-contain" />
+      </div>
+      
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -69,7 +72,8 @@ const Login = () => {
             <Sprout className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">Agro<span className="text-emerald-500">AI</span> Platform</h1>
-          <p className="text-slate-500 font-semibold mt-3">Access your personalized agricultural intelligence dashboard.</p>
+          <p className="text-emerald-600 font-bold mt-3 uppercase tracking-widest text-[10px]">Kisan Pragati, Bharat Ki Shakti</p>
+          <p className="text-slate-500 font-medium mt-1">Access your personalized agricultural intelligence dashboard.</p>
         </div>
 
         <Card className="p-10 shadow-2xl shadow-slate-200/50 border-slate-100">

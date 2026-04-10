@@ -70,7 +70,7 @@ const Marketplace = () => {
             className="absolute inset-0"
         >
             <img 
-                src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e835?q=80&w=2670&auto=format&fit=crop" 
+                src="/assets/marketplace-hero.png" 
                 alt="Marketplace Hero" 
                 className="w-full h-full object-cover" 
             />

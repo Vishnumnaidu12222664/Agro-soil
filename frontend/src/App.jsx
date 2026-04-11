@@ -13,6 +13,7 @@ import MyProducts from "./pages/MyProducts";
 import CropDiseaseDetection from "./pages/CropDiseaseDetection";
 import Brands from "./pages/Brands";
 import FarmerProfile from "./pages/FarmerProfile";
+import FarmToUPortal from "./pages/FarmToUPortal";
 
 import Welcome from "./pages/Welcome";
 
@@ -47,6 +48,7 @@ function App() {
       <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
       <Route path="/marketplace/add" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
       <Route path="/marketplace/my" element={<ProtectedRoute><MyProducts /></ProtectedRoute>} />
+      <Route path="/farmto-u" element={<ProtectedRoute><FarmToUPortal /></ProtectedRoute>} />
       <Route path="/brands/:category" element={<ProtectedRoute><Brands /></ProtectedRoute>} />
 
       {/* Fallback */}

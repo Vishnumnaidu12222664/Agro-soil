@@ -240,14 +240,12 @@ const Marketplace = () => {
                         This marketplace is for farmers to list and manage. Consumers access your products through our specialized retail gateway.
                     </p>
                 </div>
-                <a 
-                    href="https://farmto-u.platform" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                <Link 
+                    to="/farmto-u" 
                     className="bg-white text-slate-900 px-10 py-6 rounded-[2rem] font-black uppercase tracking-widest text-xs hover:bg-accent hover:text-white transition-all shadow-glow flex items-center gap-4 group/btn"
                 >
                     Visit Public Platform <ArrowRight className="group-hover/btn:translate-x-2 transition-transform" />
-                </a>
+                </Link>
             </div>
             <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[100px] group-hover:bg-accent/20 transition-colors" />
         </div>

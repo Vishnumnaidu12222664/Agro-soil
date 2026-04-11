@@ -21,26 +21,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { getMyProducts, deleteProduct } from "../api/marketplaceApi";
+import { getMyProducts, deleteProduct, getMyIncomingOrders } from "../api/marketplaceApi";
 import { toast } from "sonner";
 
 const MyProducts = () => {
   const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalStats, setTotalStats] = useState({ earnings: 0, orders: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchMyProducts();
+    fetchOrders();
   }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const data = await getMyIncomingOrders();
+      setOrders(data);
+    } catch (err) {
+      console.error("Order sync failed", err);
+    }
+  };
 
   const fetchMyProducts = async () => {
     try {
       const data = await getMyProducts();
       setProducts(data);
       const earnings = data.reduce((acc, p) => acc + (p.earnings || 0), 0);
-      const orders = data.reduce((acc, p) => acc + (p.orders_count || 0), 0);
-      setTotalStats({ earnings, orders });
+      const ordersCount = data.reduce((acc, p) => acc + (p.orders_count || 0), 0);
+      setTotalStats({ earnings, orders: ordersCount });
     } catch (err) {
       toast.error("Cloud synchronization failed");
     } finally {
@@ -234,6 +245,65 @@ const MyProducts = () => {
                       </Card>
                     </motion.div>
                   ))}
+                </div>
+              )}
+            </div>
+
+            {/* 📦 Logistics & Dispatch Feed */}
+            <div className="space-y-10">
+              <div className="flex items-center gap-4">
+                  <div className="h-px bg-slate-200 flex-1" />
+                  <h3 className="text-xl font-extrabold text-slate-900 uppercase tracking-tighter italic group flex items-center gap-3">
+                      Dispatch Logistics <Package size={20} className="text-[#009B4D]" />
+                  </h3>
+                  <div className="h-px bg-slate-200 flex-1" />
+              </div>
+
+              {orders.length === 0 ? (
+                <div className="p-12 text-center bg-slate-50 rounded-[3rem] border border-slate-100">
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">awaiting market activity...</p>
+                </div>
+              ) : (
+                <div className="overflow-hidden rounded-[2.5rem] border border-gray-100 bg-white shadow-premium">
+                    <table className="w-full text-left border-collapse">
+                        <thead>
+                            <tr className="bg-slate-900 text-white">
+                                <th className="p-6 text-[10px] font-black uppercase tracking-widest">Customer</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-widest">Asset Ordered</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-widest">Quantity</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-widest">Liaison</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-widest text-right">Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50">
+                            {orders.map((order) => (
+                                <tr key={order.id} className="hover:bg-slate-50/50 transition-colors group">
+                                    <td className="p-6">
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-black text-slate-900 uppercase tracking-tight">{order.customer_name}</p>
+                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                                <MapPin size={10} className="text-[#009B4D]" /> {order.delivery_address}
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td className="p-6">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-100 text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                                            {order.product_name}
+                                        </div>
+                                    </td>
+                                    <td className="p-6">
+                                        <p className="text-sm font-black text-slate-900 italic lowercase tracking-tight">{order.quantity} <span className="text-[9px] text-slate-400 uppercase tracking-widest not-italic">KG</span></p>
+                                    </td>
+                                    <td className="p-6">
+                                        <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.1em] text-center">{order.customer_phone}</p>
+                                    </td>
+                                    <td className="p-6 text-right">
+                                        <p className="text-lg font-extrabold text-[#009B4D] tracking-tighter italic">₹{order.total_price}</p>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
               )}
             </div>

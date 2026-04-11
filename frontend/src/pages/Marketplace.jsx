@@ -60,6 +60,14 @@ const Marketplace = () => {
     p.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const currentUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch (e) {
+      return {};
+    }
+  })();
+
   return (
     <div className="space-y-20 pb-20 bg-mesh min-h-screen">
       {/* 🏙️ Marketplace Cinematic Header */}
@@ -195,13 +203,19 @@ const Marketplace = () => {
                                 </div>
                             </div>
 
-                            <button 
-                                onClick={() => handleSimulateOrder(p.id)}
-                                className="w-full h-14 rounded-2xl bg-slate-900 group-hover:bg-primary-600 text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 flex items-center justify-center gap-3 shadow-xl"
-                            >
-                                <IndianRupee size={14} className="group-hover:rotate-[360deg] transition-transform duration-700" />
-                                Initialize Order
-                            </button>
+                            {currentUser.id !== p.user_id ? (
+                                <button 
+                                    onClick={() => handleSimulateOrder(p.id)}
+                                    className="w-full h-14 rounded-2xl bg-slate-900 group-hover:bg-primary-600 text-white font-black text-[10px] uppercase tracking-[0.2em] transition-all duration-500 flex items-center justify-center gap-3 shadow-xl"
+                                >
+                                    <IndianRupee size={14} className="group-hover:rotate-[360deg] transition-transform duration-700" />
+                                    Initialize Order
+                                </button>
+                            ) : (
+                                <div className="w-full h-14 rounded-2xl bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest flex items-center justify-center border-2 border-dashed border-slate-200">
+                                    Your Asset
+                                </div>
+                            )}
                         </div>
                     </div>
                 </motion.div>
@@ -209,6 +223,34 @@ const Marketplace = () => {
             </div>
             )}
         </AnimatePresence>
+      </section>
+
+      {/* 🌐 External Bridge */}
+      <section className="px-6 pb-20">
+        <div className="max-w-7xl mx-auto p-12 rounded-[3.5rem] bg-gradient-to-br from-slate-900 to-slate-950 text-white relative overflow-hidden group">
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                <div className="space-y-6 text-center md:text-left">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-accent text-[10px] font-black uppercase tracking-[0.3em]">
+                        Cross-Platform Synchronization
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter leading-none uppercase">
+                        FarmToU <span className="text-accent">Portal</span>
+                    </h2>
+                    <p className="text-slate-400 font-medium max-w-md uppercase tracking-widest text-[11px] leading-relaxed">
+                        This marketplace is for farmers to list and manage. Consumers access your products through our specialized retail gateway.
+                    </p>
+                </div>
+                <a 
+                    href="https://farmto-u.platform" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-white text-slate-900 px-10 py-6 rounded-[2rem] font-black uppercase tracking-widest text-xs hover:bg-accent hover:text-white transition-all shadow-glow flex items-center gap-4 group/btn"
+                >
+                    Visit Public Platform <ArrowRight className="group-hover/btn:translate-x-2 transition-transform" />
+                </a>
+            </div>
+            <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[100px] group-hover:bg-accent/20 transition-colors" />
+        </div>
       </section>
     </div>
   );

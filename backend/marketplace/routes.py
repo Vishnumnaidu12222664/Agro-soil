@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from auth.models import Product, User, db
+from auth.models import Product, User, Order, db
 from werkzeug.utils import secure_filename
 import os
 import uuid
@@ -114,17 +114,59 @@ def order_product(product_id):
     if not product:
         return jsonify({"msg": "Product not found"}), 404
 
-    # Simple Simulation
-    product.orders_count += 1
-    product.earnings += product.price_per_kg
+    # Simulated Customer Data (In a real app, this comes from the buyer)
+    import random
+    names = ["Aravind Sharma", "Priya Patel", "Vikram Singh", "Ananya Reddy", "Rahul Verma"]
+    addresses = ["123, Green Park, Delhi", "Sector 45, Gurgaon", "MG Road, Bangalore", "Civil Lines, Jaipur", "Park Street, Kolkata"]
+    
+    customer_name = random.choice(names)
+    customer_phone = f"+91 {random.randint(70000, 99999)} {random.randint(10000, 50000)}"
+    delivery_address = random.choice(addresses)
+    order_qty = 10.0 # Standard simulation
+    total_price = product.price_per_kg * order_qty
 
-    db.session.commit()
+    try:
+        # Create detailed order
+        new_order = Order(
+            product_id=product_id,
+            customer_name=customer_name,
+            customer_phone=customer_phone,
+            delivery_address=delivery_address,
+            quantity=order_qty,
+            total_price=total_price
+        )
+        
+        # Update product stats
+        product.orders_count += 1
+        product.earnings += total_price
 
-    return jsonify({
-        "msg": "Order placed successfully!", 
-        "orders_count": product.orders_count,
-        "earnings": product.earnings
-    }), 200
+        db.session.add(new_order)
+        db.session.commit()
+
+        return jsonify({
+            "msg": "Order placed successfully!", 
+            "order": new_order.to_dict(),
+            "new_stats": {
+                "orders_count": product.orders_count,
+                "earnings": product.earnings
+            }
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Failed to place order", "error": str(e)}), 500
+
+@marketplace_blueprint.route('/products/orders/my', methods=['GET'])
+@jwt_required()
+def get_my_incoming_orders():
+    user_id = int(get_jwt_identity())
+    # Find all products belonging to this user
+    user_products = Product.query.filter_by(user_id=user_id).all()
+    product_ids = [p.id for p in user_products]
+    
+    # Find all orders for these products
+    orders = Order.query.filter(Order.product_id.in_(product_ids)).order_by(Order.created_at.desc()).all()
+    
+    return jsonify([o.to_dict() for o in orders]), 200
 
 @marketplace_blueprint.route('/products/<int:product_id>', methods=['DELETE'])
 @jwt_required()

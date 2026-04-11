@@ -71,4 +71,31 @@ class Product(db.Model):
             "is_verified": self.owner.is_verified if self.owner else False
         }
 
+class Order(db.Model):
+    __tablename__ = 'orders'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    customer_name = db.Column(db.String(100), nullable=False)
+    customer_phone = db.Column(db.String(20), nullable=False)
+    delivery_address = db.Column(db.String(500), nullable=False)
+    quantity = db.Column(db.Float, nullable=False)
+    total_price = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relationship to product
+    product = db.relationship('Product', backref=db.backref('orders_list', lazy=True, cascade="all, delete-orphan"))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "product_id": self.product_id,
+            "product_name": self.product.product_name if self.product else "Deleted Product",
+            "customer_name": self.customer_name,
+            "customer_phone": self.customer_phone,
+            "delivery_address": self.delivery_address,
+            "quantity": self.quantity,
+            "total_price": self.total_price,
+            "created_at": self.created_at.isoformat()
+        }
+
 

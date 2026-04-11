@@ -130,3 +130,28 @@ export async function deleteProduct(productId) {
   }
   return data;
 }
+
+// 🛒 Get Incoming Orders (for farmer)
+export async function getMyIncomingOrders() {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE_URL}/products/orders/my`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+  });
+
+  const data = await res.json();
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login?expired=true";
+    throw new Error("Session expired. Please login again.");
+  }
+
+  if (!res.ok) {
+    throw new Error(data.msg || "Failed to fetch orders");
+  }
+  return data;
+}

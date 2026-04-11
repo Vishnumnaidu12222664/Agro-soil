@@ -38,27 +38,6 @@ export async function addProduct(productData) {
   return data;
 }
 
-export async function seedMyData() {
-    const token = localStorage.getItem("token");
-    const res = await fetch(`${API_BASE_URL}/debug/seed`, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-    });
-    const data = await res.json();
-    
-    if (res.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login?expired=true";
-      throw new Error("Session expired. Please login again.");
-    }
-
-    if (!res.ok) throw new Error(data.error || "Seeding failed");
-    return data;
-}
-
 export async function getProducts() {
   const res = await fetch(`${API_BASE_URL}/products`);
   const data = await res.json();

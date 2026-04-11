@@ -21,7 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { addProduct, seedMyData } from "../api/marketplaceApi";
+import { addProduct } from "../api/marketplaceApi";
 import { toast } from "sonner";
 
 const AddProduct = () => {
@@ -50,20 +50,7 @@ const AddProduct = () => {
     }
   };
 
-  const handleSeed = async () => {
-    setSeeding(true);
-    try {
-        await seedMyData();
-        toast.success("Accounts Synchronized!", {
-            description: "3 sample products and revenue history added to your portal."
-        });
-        navigate("/marketplace/my");
-    } catch (err) {
-        toast.error("Sync Error: " + err.message);
-    } finally {
-        setSeeding(false);
-    }
-  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -135,15 +122,7 @@ const AddProduct = () => {
         </div>
 
         <div className="flex flex-wrap gap-5">
-            <Button 
-                onClick={handleSeed}
-                loading={seeding}
-                variant="outline" 
-                className="h-14 gap-3 font-black border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all rounded-2xl"
-            >
-                <Database size={18} />
-                Sync Meta-Data
-            </Button>
+
             <Link to="/marketplace">
               <Button variant="secondary" className="h-14 gap-3 shadow-xl bg-[#009B4D] text-white hover:bg-[#007d3e] rounded-2xl border-none font-black uppercase tracking-widest text-xs">
                 <Store size={18} />
@@ -323,15 +302,8 @@ const AddProduct = () => {
                 <div className="relative z-10 space-y-6">
                     <h4 className="font-extrabold text-white uppercase italic tracking-tight text-xl">Global Data Sync</h4>
                     <p className="text-white/40 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">
-                        Authorize automated synchronization to list high-fidelity sample datasets across active exchange nodes.
+                        Authorized registry for listing high-fidelity agrarian assets across active exchange nodes.
                     </p>
-                    <button 
-                        onClick={handleSeed}
-                        disabled={seeding}
-                        className="w-full p-4 bg-white/5 hover:bg-[#FFCC00]/20 rounded-2xl border border-white/10 text-[#FFCC00] text-[10px] font-black uppercase tracking-[0.4em] transition-all"
-                    >
-                        {seeding ? "Syncing..." : "Initialize Data Stream"}
-                    </button>
                 </div>
                 <Database size={150} className="absolute bottom-[-5%] left-[-5%] text-white/5" />
             </div>

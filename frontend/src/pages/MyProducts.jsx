@@ -21,7 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { getMyProducts, deleteProduct, getMyIncomingOrders } from "../api/marketplaceApi";
+import { getMyProducts, deleteProduct, getMyIncomingOrders, seedMyData } from "../api/marketplaceApi";
 import { toast } from "sonner";
 
 const MyProducts = () => {
@@ -89,14 +89,22 @@ const MyProducts = () => {
         </div>
 
         <div className="flex flex-wrap gap-5">
-            <Link to="/marketplace">
-              <Button variant="outline" className="h-14 gap-3 font-black border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all rounded-2xl px-8">
-                <Store size={18} />
-                Public Exchange
-              </Button>
+            <Link to="/marketplace/my">
+              <button 
+                onClick={async () => {
+                  await seedMyData();
+                  fetchOrders();
+                  fetchMyProducts();
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                }}
+                className="h-14 gap-3 border-2 border-[#FFCC00] text-slate-900 bg-[#FFCC00]/10 hover:bg-[#FFCC00] transition-all rounded-2xl px-8 font-black uppercase tracking-widest text-[10px] flex items-center"
+              >
+                <ShoppingCart size={18} />
+                My Orders
+              </button>
             </Link>
             <Link to="/marketplace/add">
-              <Button className="h-14 gap-3 bg-[#009B4D] text-white hover:bg-[#007d3e] rounded-2xl border-none font-black uppercase tracking-widest text-xs px-8 shadow-xl">
+              <Button className="h-14 gap-3 bg-slate-900 text-white hover:bg-slate-800 rounded-2xl border-none font-black uppercase tracking-widest text-xs px-8 shadow-xl">
                 <Plus size={18} />
                 Add New Asset
               </Button>
@@ -168,12 +176,12 @@ const MyProducts = () => {
                   <div className="h-px bg-slate-200 flex-1" />
               </div>
 
-              {products.length === 0 ? (
+               {products.length === 0 ? (
                 <div className="h-[400px] flex flex-col items-center justify-center p-12 text-center bg-white rounded-[3rem] border-2 border-dashed border-gray-100 shadow-premium">
                   <AlertCircle size={64} className="text-slate-100 mb-8" />
                   <div className="space-y-4 mb-8">
                     <p className="text-3xl font-extrabold text-slate-900 tracking-tighter uppercase italic leading-none">zero listings detected</p>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Initialize your first agrarian node to begin tracking volume</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Initialize your first agrarian node or click 'My Orders' to sync demo data</p>
                   </div>
                   <Link to="/marketplace/add">
                     <Button className="bg-slate-900 text-white font-black h-14 rounded-2xl px-10 gap-3 group shadow-xl">

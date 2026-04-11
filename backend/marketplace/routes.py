@@ -81,20 +81,78 @@ def seed_user_data():
     user = User.query.get(user_id)
     if not user: return jsonify({"error": "User not found"}), 404
 
-    # Add dummy products
-    p1 = Product(user_id=user.id, farmer_name=user.name, product_name="Organic Basmati Rice", 
-                 price_per_kg=85.0, quantity=500.0, location="Ludhiana, Punjab", delivery_radius=100,
-                 earnings=12750.0, orders_count=15)
-    p2 = Product(user_id=user.id, farmer_name=user.name, product_name="Premium Wheat", 
-                 price_per_kg=35.0, quantity=1200.0, location="Kanpur, UP", delivery_radius=50,
-                 earnings=8400.0, orders_count=24)
-    p3 = Product(user_id=user.id, farmer_name=user.name, product_name="Yellow Onions", 
-                 price_per_kg=22.0, quantity=300.0, location="Nasik, Maharashtra", delivery_radius=80,
-                 earnings=4400.0, orders_count=10)
+    try:
+        # Clear existing to prevent duplicates if user clicks twice
+        Product.query.filter_by(user_id=user_id).delete()
+        db.session.commit()
 
-    db.session.add_all([p1, p2, p3])
-    db.session.commit()
-    return jsonify({"msg": "Successfully added 3 sample products and revenue to your account!"})
+        # 1. Define specific products required for the mock orders
+        product_list = [
+            {"name": "Potatoes", "price": 30, "qty": 1000, "loc": "Ludhiana, Punjab"},
+            {"name": "Grapes", "price": 90, "qty": 500, "loc": "Patiala, Punjab"},
+            {"name": "Wheat", "price": 32, "qty": 2000, "loc": "Amritsar, Punjab"},
+            {"name": "Maize", "price": 30, "qty": 1500, "loc": "Chandigarh, Punjab"}
+        ]
+
+        inserted_products = {}
+        for p in product_list:
+            new_p = Product(
+                user_id=user.id, 
+                farmer_name=user.name, 
+                product_name=p["name"], 
+                price_per_kg=p["price"], 
+                quantity=p["qty"], 
+                location=p["loc"], 
+                delivery_radius=100
+            )
+            db.session.add(new_p)
+            inserted_products[p["name"]] = new_p
+        
+        db.session.flush() # Get IDs
+
+        # 2. Add precisely the 20 mock orders requested
+        mock_orders = [
+            {"customer": "Ramesh Kumar", "phone": "9876543210", "p": "Potatoes", "address": "12 Model Town, Ludhiana, Punjab", "qty": 25, "total": 750},
+            {"customer": "Priya Sharma", "phone": "9123456780", "p": "Grapes", "address": "45 Urban Estate, Patiala, Punjab", "qty": 10, "total": 900},
+            {"customer": "Anil Verma", "phone": "9988776655", "p": "Wheat", "address": "78 Green Avenue, Amritsar, Punjab", "qty": 50, "total": 1600},
+            {"customer": "Sneha Reddy", "phone": "9012345678", "p": "Maize", "address": "22 Sector 21, Chandigarh, Punjab", "qty": 40, "total": 1200},
+            {"customer": "Vikram Singh", "phone": "9898989898", "p": "Potatoes", "address": "90 Civil Lines, Jalandhar, Punjab", "qty": 30, "total": 900},
+            {"customer": "Kavya Patel", "phone": "9765432101", "p": "Grapes", "address": "14 Mall Road, Bathinda, Punjab", "qty": 15, "total": 1350},
+            {"customer": "Rohit Mehta", "phone": "9345678901", "p": "Wheat", "address": "5 Ferozepur Road, Ludhiana, Punjab", "qty": 60, "total": 1920},
+            {"customer": "Meena Joshi", "phone": "9456123789", "p": "Maize", "address": "33 Shastri Nagar, Hoshiarpur, Punjab", "qty": 35, "total": 1050},
+            {"customer": "Suresh Yadav", "phone": "9871203456", "p": "Potatoes", "address": "67 GT Road, Amritsar, Punjab", "qty": 20, "total": 600},
+            {"customer": "Pooja Nair", "phone": "9090909090", "p": "Grapes", "address": "18 Rose Garden, Jalandhar, Punjab", "qty": 12, "total": 1080},
+            {"customer": "Harish Gupta", "phone": "9811122233", "p": "Wheat", "address": "101 Sector 15, Mohali, Punjab", "qty": 45, "total": 1440},
+            {"customer": "Lakshmi Devi", "phone": "9700011122", "p": "Maize", "address": "56 Main Bazaar, Patiala, Punjab", "qty": 55, "total": 1650},
+            {"customer": "Arjun Rao", "phone": "9632587410", "p": "Potatoes", "address": "88 Guru Nanak Nagar, Ludhiana, Punjab", "qty": 18, "total": 540},
+            {"customer": "Divya Kapoor", "phone": "9874512360", "p": "Grapes", "address": "29 Residency Area, Amritsar, Punjab", "qty": 8, "total": 720},
+            {"customer": "Naveen Choudhary", "phone": "9556677889", "p": "Wheat", "address": "11 Farmers Colony, Barnala, Punjab", "qty": 70, "total": 2240},
+            {"customer": "Sunita Mishra", "phone": "9445566778", "p": "Maize", "address": "74 Ring Road, Mohali, Punjab", "qty": 25, "total": 750},
+            {"customer": "Kiran Babu", "phone": "9988007766", "p": "Potatoes", "address": "42 Railway Colony, Pathankot, Punjab", "qty": 40, "total": 1200},
+            {"customer": "Asha Jain", "phone": "9312345670", "p": "Grapes", "address": "65 Market Street, Moga, Punjab", "qty": 20, "total": 1800},
+            {"customer": "Mohan Lal", "phone": "9822334455", "p": "Wheat", "address": "78 Old Bus Stand Road, Sangrur, Punjab", "qty": 35, "total": 1120},
+            {"customer": "Rekha Soni", "phone": "9001122334", "p": "Maize", "address": "53 New Colony, Fazilka, Punjab", "qty": 30, "total": 900}
+        ]
+
+        for mo in mock_orders:
+            prod = inserted_products[mo["p"]]
+            order = Order(
+                product_id=prod.id,
+                customer_name=mo["customer"],
+                customer_phone=mo["phone"],
+                delivery_address=mo["address"],
+                quantity=mo["qty"],
+                total_price=mo["total"]
+            )
+            prod.orders_count += 1
+            prod.earnings += mo["total"]
+            db.session.add(order)
+
+        db.session.commit()
+        return jsonify({"msg": "Successfully initialized 20 custom order history records!"})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Seeding failed", "error": str(e)}), 500
 
 @marketplace_blueprint.route('/products', methods=['GET'])
 def get_all_products():

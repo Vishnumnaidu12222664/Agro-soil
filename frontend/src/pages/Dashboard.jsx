@@ -118,8 +118,8 @@ const Dashboard = () => {
             <span className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.4em] shadow-glow">
               Future of Agrarian Intelligence
             </span>
-            <h1 className="text-7xl md:text-9xl font-black text-white tracking-tighter leading-none italic uppercase">
-              The <span className="text-accent underline decoration-accent/30 underline-offset-8">New</span> Harvest
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none italic uppercase">
+              <span className="text-[#FF9933]">AgroAI</span> – <span className="text-white">Kisan Pragati</span>, <span className="text-[#138808]">Bharat Ki Shakti</span>
             </h1>
             <p className="text-xl md:text-2xl text-white/80 font-medium max-w-3xl mx-auto leading-relaxed">
               Empowering global farmers with high-fidelity neural diagnostics and real-time market orchestration.

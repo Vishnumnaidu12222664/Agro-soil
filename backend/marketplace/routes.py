@@ -125,3 +125,23 @@ def order_product(product_id):
         "orders_count": product.orders_count,
         "earnings": product.earnings
     }), 200
+
+@marketplace_blueprint.route('/products/<int:product_id>', methods=['DELETE'])
+@jwt_required()
+def delete_product(product_id):
+    user_id = int(get_jwt_identity())
+    product = Product.query.get(product_id)
+    
+    if not product:
+        return jsonify({"msg": "Product not found"}), 404
+        
+    if product.user_id != user_id:
+        return jsonify({"msg": "Unauthorized to delete this product"}), 403
+        
+    try:
+        db.session.delete(product)
+        db.session.commit()
+        return jsonify({"msg": "Product removed successfully from registry"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": "Failed to delete product", "error": str(e)}), 500

@@ -105,3 +105,28 @@ export async function orderProduct(productId) {
   }
   return data;
 }
+
+// 🛒 Delete Product
+export async function deleteProduct(productId) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_BASE_URL}/products/${productId}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+  });
+
+  const data = await res.json();
+
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login?expired=true";
+    throw new Error("Session expired. Please login again.");
+  }
+
+  if (!res.ok) {
+    throw new Error(data.msg || "Failed to remove product");
+  }
+  return data;
+}

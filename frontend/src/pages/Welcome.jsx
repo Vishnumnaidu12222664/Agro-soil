@@ -60,8 +60,8 @@ const Welcome = () => {
               <MapPin size={12} className="fill-emerald-600" /> Empowering the Heart of India
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-[0.95] italic uppercase">
-              Agro<span className="text-emerald-500">AI</span> – <span className="text-emerald-500">Kisan Pragati</span>, Bharat Ki Shakti
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] italic uppercase">
+              <span className="text-[#FF9933]">AgroAI</span> – <span className="text-slate-900">Kisan Pragati</span>, <span className="text-[#138808]">Bharat Ki Shakti</span>
             </h1>
             
             <p className="text-base md:text-lg text-slate-500 font-medium max-w-lg leading-relaxed">

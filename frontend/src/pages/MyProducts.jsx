@@ -14,13 +14,14 @@ import {
   ShoppingCart,
   Wallet,
   ArrowRight,
-  Zap
+  Zap,
+  Trash2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import Card from "../components/ui/Card";
 import Button from "../components/ui/Button";
-import { getMyProducts } from "../api/marketplaceApi";
+import { getMyProducts, deleteProduct } from "../api/marketplaceApi";
 import { toast } from "sonner";
 
 const MyProducts = () => {
@@ -44,6 +45,18 @@ const MyProducts = () => {
       toast.error("Cloud synchronization failed");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (productId) => {
+    if (!window.confirm("Are you certain you want to decommission this asset? This action is irreversible.")) return;
+    
+    try {
+      await deleteProduct(productId);
+      toast.success("Asset decommissioned successfully");
+      fetchMyProducts(); // Refresh list
+    } catch (err) {
+      toast.error(err.message || "Failed to remove asset");
     }
   };
 
@@ -202,12 +215,21 @@ const MyProducts = () => {
                               </div>
                            </div>
                            
-                           <button 
-                             onClick={() => navigate(`/marketplace`)} 
-                             className="w-full h-14 rounded-2xl bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-500 group-hover:bg-[#009B4D] shadow-xl"
-                           >
-                              Inspect Exchange <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                           </button>
+                           <div className="flex gap-4">
+                             <button 
+                               onClick={() => navigate(`/marketplace`)} 
+                               className="flex-1 h-14 rounded-2xl bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-500 hover:bg-slate-800 shadow-xl"
+                             >
+                                Inspect <ArrowRight size={14} />
+                             </button>
+                             <button 
+                               onClick={() => handleDelete(p.id)} 
+                               className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all duration-300 border border-red-100"
+                               title="Remove Asset"
+                             >
+                                <Trash2 size={20} />
+                             </button>
+                           </div>
                         </div>
                       </Card>
                     </motion.div>

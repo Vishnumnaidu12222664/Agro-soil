@@ -24,7 +24,7 @@ export async function addProduct(productData) {
   });
 
   const data = await res.json();
-  
+
   if (res.status === 401) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");

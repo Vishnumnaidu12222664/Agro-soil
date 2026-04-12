@@ -12,7 +12,7 @@ export const predictDisease = async (imageFile) => {
 
     const data = await response.json();
     if (!response.ok) {
-        throw new Error(data.error || "Disease detection failed");
+      throw new Error(data.error || "Disease detection failed");
     }
     return data;
   } catch (error) {

@@ -239,12 +239,18 @@ const SoilAnalysis = () => {
                                     </div>
                                     <div className="space-y-4">
                                         <h3 className="text-6xl md:text-7xl font-black tracking-tighter uppercase italic leading-none text-white">{result.soil_type || "No Data"}</h3>
-                                        <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">Neural confidence: 99.81%</p>
-                                    </div>
-                                    <div className="pt-6">
-                                        <div className="h-1 w-20 bg-white/20 rounded-full overflow-hidden">
-                                            <div className="h-full w-4/5 bg-accent shadow-accent-glow" />
+                                    <div className="pt-6 space-y-4">
+                                        <div className="h-2.5 w-full bg-white/20 rounded-full overflow-hidden border border-white/10">
+                                            <motion.div 
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${(result.confidence * 100).toFixed(2)}%` }}
+                                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                                className="h-full bg-accent shadow-accent-glow relative"
+                                            >
+                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                                            </motion.div>
                                         </div>
+                                        <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">Neural confidence: {(result.confidence * 100).toFixed(2)}%</p>
                                     </div>
                                 </div>
                                 <Droplets className="absolute -bottom-10 -right-10 h-64 w-64 text-white/5 -rotate-12 group-hover:scale-110 transition-transform duration-1000" />
